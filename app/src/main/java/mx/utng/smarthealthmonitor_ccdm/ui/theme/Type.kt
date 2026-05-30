@@ -1,4 +1,4 @@
-package mx.utng.smarthealthmonitor.ui.theme
+package mx.utng.smarthealthmonitor_ccdm.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

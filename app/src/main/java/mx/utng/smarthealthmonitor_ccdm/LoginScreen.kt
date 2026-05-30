@@ -1,4 +1,4 @@
-package mx.utng.smarthealthmonitor
+package mx.utng.smarthealthmonitor_ccdm
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import mx.utng.smarthealthmonitor.ui.theme.SmartHealthMonitorTheme
+import mx.utng.smarthealthmonitor_ccdm.ui.theme.SmartHealthMonitorTheme
 
 @Composable
 fun LoginScreen(
@@ -28,7 +28,9 @@ fun LoginScreen(
     var isLoading by remember { mutableStateOf(false) }
 
     var emailError by remember { mutableStateOf("") }
-    var passwordError by remember { mutableStateOf("") }
+    var passwordError by remember {
+        mutableStateOf("")
+    }
 
     fun validar(): Boolean {
 
@@ -158,48 +160,34 @@ fun LoginScreen(
                     onClick = {
                         if (validar()) {
                             isLoading = true
-
-                            // Aquí iría Firebase o la lógica real de login
-
                             onLoginSuccess()
-
-                            isLoading = false
                         }
                     },
-                    enabled = !isLoading,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp)
+                        .height(56.dp),
+                    enabled = !isLoading
                 ) {
-
                     if (isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
-                            strokeWidth = 2.dp
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("ENTRAR")
+                        Text(
+                            text = "ENTRAR",
+                            style = MaterialTheme.typography.labelLarge
+                        )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(Modifier.height(16.dp))
 
-                TextButton(
-                    onClick = {
-                        // Recuperar contraseña
-                    }
-                ) {
+                TextButton(onClick = {}) {
                     Text("¿Olvidaste tu contraseña?")
                 }
+
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    SmartHealthMonitorTheme {
-        LoginScreen()
     }
 }

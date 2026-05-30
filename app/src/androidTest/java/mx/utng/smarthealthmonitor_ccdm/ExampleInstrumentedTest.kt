@@ -1,4 +1,4 @@
-package mx.utng.smarthealthmonitor
+package mx.utng.smarthealthmonitor_ccdm
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
