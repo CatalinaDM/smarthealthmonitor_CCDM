@@ -4,8 +4,8 @@ package mx.utng.smarthealthmonitor_ccdm.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
-import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository
 import mx.utng.smarthealthmonitor_ccdm.data.models.MockData
+import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository
 
 class DashboardViewModel : ViewModel() {
 
@@ -25,6 +25,13 @@ class DashboardViewModel : ViewModel() {
             scope        = viewModelScope,
             started      = SharingStarted.WhileSubscribed(5_000),
             initialValue = MockData.pasosActual
+        )
+    val spO2: StateFlow<Int> = SmartHealthRepository.spO2Flow
+        .map { if (it == 0) 98 else it } // valor por defecto
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = 98
         )
     val historial = MockData.historialFC  // TODO S7: Room
 }

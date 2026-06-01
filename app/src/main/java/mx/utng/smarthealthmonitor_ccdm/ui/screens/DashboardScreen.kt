@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,6 +33,7 @@ import mx.utng.smarthealthmonitor_ccdm.ui.theme.SmartHealthMonitorTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository
 import mx.utng.smarthealthmonitor_ccdm.ui.viewmodel.DashboardViewModel
 
 
@@ -45,7 +47,9 @@ fun DashboardScreen(
     // collectAsState() convierte StateFlow en State de Compose
     val fc by viewModel.fc.collectAsState()
     val pasos by viewModel.pasos.collectAsState()
+    val spO2 by viewModel.spO2.collectAsState()
     val historial = viewModel.historial
+
 
     SmartHealthMonitorTheme {
         Scaffold(
@@ -102,6 +106,14 @@ fun DashboardScreen(
                         colorValor = MaterialTheme.colorScheme.primaryContainer
                     )
                 }
+                item {
+                    TarjetaDato(
+                        valor      = "$spO2",
+                        unidad     = "%",
+                        label      = "Saturación de oxígeno",
+                        colorValor = MaterialTheme.colorScheme.tertiary
+                    )
+                }
                 // ── Encabezado historial ──────────────────
                 item {
                     Row(
@@ -119,6 +131,21 @@ fun DashboardScreen(
                 // ── Lista del historial ───────────────────
                 items(historial, key = { it.id }) { lectura ->
                     FilaHistorial(lectura = lectura)
+                }
+
+                // ── Botón de simulación (SOLO PARA DEBUG) ──
+                item {
+                    OutlinedButton(
+                        onClick = {
+                            // Simular lectura del wearable
+                            val fcSimulado = (60..110).random()
+                            SmartHealthRepository.actualizarFC(fcSimulado)
+                            SmartHealthRepository.actualizarPasos((3000..8000).random())
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Simular dato del wearable (DEBUG)")
+                    }
                 }
             }
         }
