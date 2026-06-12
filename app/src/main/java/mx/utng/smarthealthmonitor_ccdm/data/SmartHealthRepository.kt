@@ -8,6 +8,7 @@ import mx.utng.smarthealthmonitor_ccdm.data.db.LecturaFCDao
 import mx.utng.smarthealthmonitor_ccdm.data.db.SmartHealthDB
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import android.util.Log
 
 /**
  * Repositorio singleton que centraliza los datos de salud.
@@ -36,6 +37,7 @@ object SmartHealthRepository {
     }
 
     suspend fun actualizarFC(bpm: Int) {
+        Log.d("Repository", "Guardando FC: $bpm")
         _fcFlow.value = bpm
         // Persistir en Room automáticamente
         dao?.insertar(LecturaFC(valorBpm = bpm))

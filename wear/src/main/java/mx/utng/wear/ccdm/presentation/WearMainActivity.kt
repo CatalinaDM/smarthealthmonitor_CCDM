@@ -31,16 +31,47 @@ import mx.utng.wear.ccdm.R
 import mx.utng.wear.ccdm.presentation.theme.SmartHealthMonitorTheme
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import androidx.core.app.ActivityCompat
+import android.Manifest
+import android.content.pm.PackageManager
 
 class WearMainActivity : ComponentActivity() {
+
+    private val permissions = arrayOf(
+        "android.permission.health.READ_HEART_RATE",
+        Manifest.permission.ACTIVITY_RECOGNITION
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Registrar el listener de Health Services
-        lifecycleScope.launch {
-            HealthDataService.registrar(applicationContext)
+        ActivityCompat.requestPermissions(
+            this,
+            permissions,
+            100
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(
+            requestCode,
+            permissions,
+            grantResults
+        )
+
+        if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            // Registrar el listener de Health Services
+            lifecycleScope.launch {
+                HealthDataService.registrar(applicationContext)
+            }
+
         }
     }
 }
+
 
 @Composable
 fun WearApp(greetingName: String) {
