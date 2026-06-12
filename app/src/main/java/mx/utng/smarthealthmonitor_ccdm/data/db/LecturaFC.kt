@@ -1,7 +1,7 @@
 package mx.utng.smarthealthmonitor_ccdm.data.db
 
 import androidx.room.*
-import androidx.room3.Entity
+import androidx.room.Entity
 
 @Entity(tableName = "lecturas_fc")
 data class LecturaFC(

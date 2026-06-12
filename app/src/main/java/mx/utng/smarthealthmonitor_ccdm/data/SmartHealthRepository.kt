@@ -1,12 +1,13 @@
 package mx.utng.smarthealthmonitor_ccdm.data
 import android.content.Context
-import androidx.constraintlayout.helper.widget.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import mx.utng.smarthealthmonitor_ccdm.data.db.LecturaFC
 import mx.utng.smarthealthmonitor_ccdm.data.db.LecturaFCDao
 import mx.utng.smarthealthmonitor_ccdm.data.db.SmartHealthDB
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 /**
  * Repositorio singleton que centraliza los datos de salud.
@@ -40,15 +41,16 @@ object SmartHealthRepository {
         dao?.insertar(LecturaFC(valorBpm = bpm))
     }
 
-    // Flow del historial desde Room
-    fun obtenerHistorial(): Flow<List<LecturaFC>> =
-        dao?.obtenerUltimas() ?: emptyFlow()
-
 fun actualizarPasos(pasos: Int) {
         _pasosFlow.value = pasos
     }
     fun actualizarSpO2(spO2: Int) {
         _spO2Flow.value = spO2
     }
+    // Flow del historial desde Room
+    fun obtenerHistorial(): Flow<List<LecturaFC>> =
+        dao?.obtenerUltimas() ?: emptyFlow()
+
+
 }
 

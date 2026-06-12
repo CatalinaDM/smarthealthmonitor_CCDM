@@ -49,16 +49,16 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.foundation)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.material3)
     implementation("androidx.navigation:navigation-compose:2.9.8")
     // Wearable Data Layer API
     implementation("com.google.android.gms:play-services-wearable:18.2.0")
-    implementation(libs.androidx.room.compiler)
-    implementation(libs.androidx.room3.common.jvm)
+    //implementation(libs.androidx.room.compiler)
+   // implementation(libs.androidx.room3.common.jvm)
     implementation(libs.play.services.wearable)
     // Coroutines para await()
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
@@ -69,11 +69,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    val roomVersion = "2.6.1"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    // Necesario para generar el código del DAO
-    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-runtime:2.8.4")
+    implementation("androidx.room:room-ktx:2.8.4")
+    ksp("androidx.room:room-compiler:2.8.4")
 
 
 }

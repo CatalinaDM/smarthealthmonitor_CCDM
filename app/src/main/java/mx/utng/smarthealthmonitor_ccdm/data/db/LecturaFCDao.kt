@@ -3,6 +3,7 @@ package mx.utng.smarthealthmonitor_ccdm.data.db
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
+
 @Dao
 interface LecturaFCDao {
 

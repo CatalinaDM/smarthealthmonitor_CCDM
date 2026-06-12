@@ -1,10 +1,9 @@
 package mx.utng.smarthealthmonitor_ccdm.data.db
 
 import android.content.Context
-import androidx.room.*
-import androidx.room.vo.Database
-import androidx.room3.Database
-
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.Room
 @Database(
     entities = [LecturaFC::class],
     version  = 1,
@@ -28,3 +27,4 @@ abstract class SmartHealthDB : RoomDatabase() {
         }
     }
 }
+
