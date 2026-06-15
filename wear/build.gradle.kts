@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -62,5 +63,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
     implementation("androidx.health:health-services-client:1.1.0-alpha05")
+    // Compartir Repository con el módulo app
+    implementation(project(":app"))
 
 }

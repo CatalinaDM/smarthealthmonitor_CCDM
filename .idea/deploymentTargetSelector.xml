@@ -4,18 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-06-12T09:47:41.709921700Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marco\.android\avd\Wear_OS_Small_Round.avd" />
-            </handle>
-          </Target>
-        </DropdownSelection>
-        <DialogSelection />
-      </SelectionState>
-      <SelectionState runConfigName="wear">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-05-30T01:50:51.184962100Z">
+        <DropdownSelection timestamp="2026-06-15T23:18:42.101935Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marco\.android\avd\Pixel_10_Pro.avd" />
@@ -24,7 +13,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="AlertaScreenPreview">
+      <SelectionState runConfigName="wear">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2026-06-12T09:47:41.709921700Z">
           <Target type="DEFAULT_BOOT">

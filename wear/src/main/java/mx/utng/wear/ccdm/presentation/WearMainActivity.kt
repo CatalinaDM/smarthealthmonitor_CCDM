@@ -37,6 +37,8 @@ import android.content.pm.PackageManager
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import mx.utng.wear.ccdm.presentation.theme.SmartHealthWearTheme
+
 
 class WearMainActivity : ComponentActivity() {
 
@@ -53,11 +55,14 @@ class WearMainActivity : ComponentActivity() {
             100
         )
         setContent {
-            WearApp("Smart Health")
+            SmartHealthWearTheme {
+                // TODO Ej.02: reemplazar con WearNavGraph
+                WearDashboardScreen()
+            }
         }
     }
 
-    override fun onRequestPermissionsResult(
+override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray
