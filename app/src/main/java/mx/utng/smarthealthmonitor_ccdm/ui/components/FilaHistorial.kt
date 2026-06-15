@@ -9,9 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import mx.utng.smarthealthmonitor_ccdm.data.models.LecturaFC
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.text.font.FontWeight
+import mx.utng.smarthealthmonitor_ccdm.data.db.LecturaFC
+
 @Composable
 fun FilaHistorial(
     lectura: LecturaFC,

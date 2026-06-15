@@ -25,16 +25,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import mx.utng.smarthealthmonitor_ccdm.data.models.LecturaFC
-import mx.utng.smarthealthmonitor_ccdm.data.models.MockData
 import mx.utng.smarthealthmonitor_ccdm.ui.components.FilaHistorial
 import mx.utng.smarthealthmonitor_ccdm.ui.components.TarjetaDato
 import mx.utng.smarthealthmonitor_ccdm.ui.theme.SmartHealthMonitorTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository
+import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository.actualizarFC
 import mx.utng.smarthealthmonitor_ccdm.ui.viewmodel.DashboardViewModel
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +49,11 @@ fun DashboardScreen(
     val fc by viewModel.fc.collectAsState()
     val pasos by viewModel.pasos.collectAsState()
     val spO2 by viewModel.spO2.collectAsState()
-    val historial = viewModel.historial
+    val historial by viewModel.historial.collectAsState()
+    val scope = rememberCoroutineScope()
+
+
+
 
 
     SmartHealthMonitorTheme {
@@ -139,7 +144,10 @@ fun DashboardScreen(
                         onClick = {
                             // Simular lectura del wearable
                             val fcSimulado = (60..110).random()
-                            SmartHealthRepository.actualizarFC(fcSimulado)
+                            scope.launch{
+                                SmartHealthRepository.actualizarFC(fcSimulado)
+
+                            }
                             SmartHealthRepository.actualizarPasos((3000..8000).random())
                         },
                         modifier = Modifier.fillMaxWidth()
