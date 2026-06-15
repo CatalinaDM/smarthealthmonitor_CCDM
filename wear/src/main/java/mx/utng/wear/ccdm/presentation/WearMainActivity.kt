@@ -34,6 +34,9 @@ import kotlinx.coroutines.launch
 import androidx.core.app.ActivityCompat
 import android.Manifest
 import android.content.pm.PackageManager
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class WearMainActivity : ComponentActivity() {
 
@@ -49,6 +52,9 @@ class WearMainActivity : ComponentActivity() {
             permissions,
             100
         )
+        setContent {
+            WearApp("Smart Health")
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -75,6 +81,7 @@ class WearMainActivity : ComponentActivity() {
 
 @Composable
 fun WearApp(greetingName: String) {
+    val context = LocalContext.current
     SmartHealthMonitorTheme {
         AppScaffold {
             val listState = rememberTransformingLazyColumnState()
@@ -106,14 +113,24 @@ fun WearApp(greetingName: String) {
                     }
                     item {
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+
+                                CoroutineScope(Dispatchers.IO).launch {
+
+                                    WearDataSender(context)
+                                        .enviarFC(95)
+
+                                }
+
+                            },
                             modifier = Modifier.fillMaxWidth()
                                 .transformedHeight(this, transformationSpec),
                             transformation = SurfaceTransformation(transformationSpec),
                         ) {
-                            Text("Button A")
+                            Text("Enviar FC 95")
                         }
                     }
+
                     item {
                         Button(
                             onClick = { /*TODO*/ },

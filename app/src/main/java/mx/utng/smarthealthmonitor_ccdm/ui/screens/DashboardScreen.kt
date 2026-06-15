@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import mx.utng.smarthealthmonitor_ccdm.ui.components.FilaHistorial
 import mx.utng.smarthealthmonitor_ccdm.ui.components.TarjetaDato
 import mx.utng.smarthealthmonitor_ccdm.ui.theme.SmartHealthMonitorTheme
@@ -36,6 +35,12 @@ import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository
 import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository.actualizarFC
 import mx.utng.smarthealthmonitor_ccdm.ui.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,14 +55,34 @@ fun DashboardScreen(
     val pasos by viewModel.pasos.collectAsState()
     val spO2 by viewModel.spO2.collectAsState()
     val historial by viewModel.historial.collectAsState()
+
+    var mostrarAlerta by remember { mutableStateOf(false) }
+    val snackbarHost = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    if (mostrarAlerta) {
+        AlertaScreen(
+            fc = fc,
+            onDismiss = {
+                mostrarAlerta = false
+            },
+            onConfirmar = {
+                mostrarAlerta = false
 
-
+                scope.launch {
+                    snackbarHost.showSnackbar(
+                        message = "✅ Alerta enviada a tus contactos de emergencia",
+                        duration = SnackbarDuration.Long
+                    )
+                }
+            }
+        )
+    }
 
 
     SmartHealthMonitorTheme {
         Scaffold(
+            snackbarHost = { SnackbarHost(hostState = snackbarHost) },
             topBar = {
                 TopAppBar(
                     title = {
@@ -74,11 +99,10 @@ fun DashboardScreen(
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick       = onAlertClick,
+                    onClick        = { mostrarAlerta = true },
                     containerColor = MaterialTheme.colorScheme.error
                 ) {
-                    Icon(
-                        imageVector       = Icons.Default.Warning,
+                    Icon(Icons.Default.Warning,
                         contentDescription = "Enviar alerta de emergencia",
                         tint              = MaterialTheme.colorScheme.onError
                     )
@@ -86,12 +110,8 @@ fun DashboardScreen(
             }
         ) { paddingValues ->
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentPadding        = PaddingValues(16.dp),
-                verticalArrangement   = Arrangement.spacedBy(12.dp)
-            ) {
+                 Modifier
+                    .padding(paddingValues)) {
                 // ── Tarjeta FC ────────────────────────────
                 item {
                     TarjetaDato(
