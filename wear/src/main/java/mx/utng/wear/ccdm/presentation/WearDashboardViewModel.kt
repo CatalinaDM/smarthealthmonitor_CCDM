@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC
 import mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository
 
 class WearDashboardViewModel : ViewModel() {
@@ -15,6 +16,11 @@ class WearDashboardViewModel : ViewModel() {
         .map { if (it == 0) 72 else it }  // valor por defecto
         .stateIn(viewModelScope,
             SharingStarted.WhileSubscribed(5_000), 72)
+
+    val historial: StateFlow<List<LecturaFC>> = SmartHealthRepository.obtenerHistorial()
+            .stateIn(viewModelScope,
+                SharingStarted.WhileSubscribed(5_000),
+                emptyList())
 }
 
 

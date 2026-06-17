@@ -5,165 +5,122 @@
 
 package mx.utng.wear.ccdm.presentation
 
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
-import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
-import androidx.wear.compose.material3.AppScaffold
-import androidx.wear.compose.material3.Button
-import androidx.wear.compose.material3.ButtonDefaults
-import androidx.wear.compose.material3.EdgeButton
-import androidx.wear.compose.material3.ListHeader
-import androidx.wear.compose.material3.MaterialTheme
-import androidx.wear.compose.material3.ScreenScaffold
-import androidx.wear.compose.material3.SurfaceTransformation
-import androidx.wear.compose.material3.Text
-import androidx.wear.compose.material3.lazy.rememberTransformationSpec
-import androidx.wear.compose.material3.lazy.transformedHeight
-import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
-import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
-import mx.utng.wear.ccdm.R
-import mx.utng.wear.ccdm.presentation.theme.SmartHealthMonitorTheme
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
-import androidx.core.app.ActivityCompat
-import android.Manifest
-import android.content.pm.PackageManager
-import androidx.compose.ui.platform.LocalContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import mx.utng.wear.ccdm.presentation.theme.SmartHealthMonitorTheme
+import mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository
 
-class WearMainActivity : ComponentActivity() {
+class WearMainActivity : ComponentActivity(), SensorEventListener {
 
-    private val permissions = arrayOf(
-        "android.permission.health.READ_HEART_RATE",
-        Manifest.permission.ACTIVITY_RECOGNITION
-    )
+    private lateinit var sensorManager: SensorManager
+    private var heartRateSensor: Sensor? = null
+    private lateinit var wearDataSender: WearDataSender
+    private var isRegistered = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.e("PRUEBA_CATI", "ENTRO A ONCREATE")
         super.onCreate(savedInstanceState)
-        ActivityCompat.requestPermissions(
-            this,
-            permissions,
-            100
+
+
+        // Inicializar el repositorio compartido en el módulo wear
+        SmartHealthRepository.init(applicationContext)
+
+        wearDataSender = WearDataSender(applicationContext)
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        heartRateSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)
+
+        val permissions = arrayOf(
+            android.Manifest.permission.BODY_SENSORS,
+            android.Manifest.permission.ACTIVITY_RECOGNITION,
         )
+
+
+        val allGranted = permissions.all {
+            androidx.core.content.ContextCompat.checkSelfPermission(this, it) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        }
+
+        if (allGranted) {
+            registerHealthServices()
+        } else {
+            permissionLauncher.launch(permissions)
+        }
+
         setContent {
             SmartHealthMonitorTheme {
-                // TODO Ej.02: reemplazar con WearNavGraph
+                // Reemplazado con WearNavGraph
                 SmartHealthWearNavGraph()
             }
         }
     }
 
-override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(
-            requestCode,
-            permissions,
-            grantResults
-        )
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
 
-        if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-            // Registrar el listener de Health Services
-            lifecycleScope.launch {
+        result.forEach { (permiso, concedido) ->
+            Log.e(
+                "PRUEBA_CATI",
+                "$permiso -> $concedido"
+            )
+        }
+
+        val allGranted = result.values.all { it }
+
+        if (allGranted) {
+            registerHealthServices()
+        }
+    }
+    private fun registerHealthServices() {
+        if (isRegistered) return
+        isRegistered = true
+
+        // Registrar el HealthDataService para monitorear el sensor de FC en segundo plano
+        lifecycleScope.launch {
+            try {
                 HealthDataService.registrar(applicationContext)
+            } catch (e: Exception) {
             }
-
         }
+
+        // Registrar el SensorEventListener para actualización en tiempo real e inmediata
+        heartRateSensor?.let { sensor ->
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        } ?: Log.w("WearMainActivity", "El dispositivo no tiene sensor de ritmo cardíaco")
     }
-}
 
-
-@Composable
-fun WearApp(greetingName: String) {
-    val context = LocalContext.current
-    SmartHealthMonitorTheme {
-        AppScaffold {
-            val listState = rememberTransformingLazyColumnState()
-            val transformationSpec = rememberTransformationSpec()
-            ScreenScaffold(
-                scrollState = listState,
-                edgeButton = {
-                    EdgeButton(
-                        onClick = { /*TODO*/ },
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                            ),
-                    ) {
-                        Text("More")
-                    }
-                },
-            ) { contentPadding -> // ScreenScaffold provides default padding; adjust as needed
-                TransformingLazyColumn(contentPadding = contentPadding, state = listState) {
-                    item {
-                        ListHeader(
-                            modifier =
-                                Modifier.fillMaxWidth().transformedHeight(this, transformationSpec),
-                            transformation = SurfaceTransformation(transformationSpec),
-                        ) {
-                            Text(text = stringResource(R.string.hello_world, greetingName))
-                        }
-                    }
-                    item {
-                        Button(
-                            onClick = {
-
-                                CoroutineScope(Dispatchers.IO).launch {
-
-                                    WearDataSender(context)
-                                        .enviarFC(95)
-
-                                }
-
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                                .transformedHeight(this, transformationSpec),
-                            transformation = SurfaceTransformation(transformationSpec),
-                        ) {
-                            Text("Enviar FC 95")
-                        }
-                    }
-
-                    item {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier.fillMaxWidth()
-                                .transformedHeight(this, transformationSpec),
-                            transformation = SurfaceTransformation(transformationSpec),
-                        ) {
-                            Text("Button B")
-                        }
-                    }
-                    item {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier.fillMaxWidth()
-                                .transformedHeight(this, transformationSpec),
-                            transformation = SurfaceTransformation(transformationSpec),
-                        ) {
-                            Text("Button C")
-                        }
-                    }
-
-                }
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event != null && event.sensor.type == Sensor.TYPE_HEART_RATE) {
+            val bpm = event.values[0].toInt()
+            lifecycleScope.launch {
+                // Actualizar el repositorio local para que la UI del reloj cambie de inmediato
+                SmartHealthRepository.actualizarFC(bpm)
+                // Enviar el dato en tiempo real a la app del celular
+                wearDataSender.enviarFC(bpm)
             }
         }
     }
-}
 
-@WearPreviewDevices
-@WearPreviewFontScales
-@Composable
-fun DefaultPreview() {
-    WearApp("Preview Android")
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        // No-op
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isRegistered) {
+            sensorManager.unregisterListener(this)
+            Log.d("WearMainActivity", "SensorEventListener desregistrado")
+        }
+    }
 }
