@@ -6,8 +6,9 @@ import com.google.android.gms.wearable.WearableListenerService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository
 
-    class WearListenerService : WearableListenerService() {
+class WearListenerService : WearableListenerService() {
 
         companion object {
             const val PATH_FC    = "/smarthealthmonitor/fc"

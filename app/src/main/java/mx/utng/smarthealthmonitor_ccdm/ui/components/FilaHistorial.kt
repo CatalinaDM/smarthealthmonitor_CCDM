@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.text.font.FontWeight
-import mx.utng.smarthealthmonitor_ccdm.data.db.LecturaFC
+import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC
 
 @Composable
 fun FilaHistorial(

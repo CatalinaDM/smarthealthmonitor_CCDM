@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import mx.utng.smarthealthmonitor_ccdm.data.models.MockData
-import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository
-import mx.utng.smarthealthmonitor_ccdm.data.db.LecturaFC
+import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC
+import mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository
 
 
 class DashboardViewModel : ViewModel() {

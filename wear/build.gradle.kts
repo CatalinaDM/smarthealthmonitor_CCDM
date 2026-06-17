@@ -43,6 +43,7 @@ android {
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.material)
     implementation(libs.wear.compose.foundation)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
@@ -63,6 +64,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
     implementation("androidx.health:health-services-client:1.1.0-alpha05")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     // Compartir Repository con el módulo app
     implementation(project(":shared"))
 
