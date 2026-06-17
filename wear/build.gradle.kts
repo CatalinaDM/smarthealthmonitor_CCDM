@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.navigation)
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.wear.compose.foundation)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)

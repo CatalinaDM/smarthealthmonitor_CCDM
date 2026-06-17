@@ -24,6 +24,7 @@ foundation = "1.11.2"
 appcompat = "1.7.1"
 material = "1.14.0"
 composeNavigation = "1.6.2"
+runtime = "1.11.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +56,7 @@ androidx-foundation = { group = "androidx.compose.foundation", name = "foundatio
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-compose-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "composeNavigation" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

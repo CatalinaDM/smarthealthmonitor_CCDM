@@ -18,9 +18,11 @@ import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.TimeText
 import androidx.wear.compose.material3.scrollAway
 import mx.utng.wear.ccdm.presentation.components.WearFCCard
+import androidx.navigation.NavHostController
 
 @Composable
 fun WearDashboardScreen(
+    navController: NavHostController,
     onAlertClick: () -> Unit = {},
     viewModel: WearDashboardViewModel = viewModel()
 ) {
@@ -58,6 +60,14 @@ fun WearDashboardScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
+            item {
+                Chip(
+                    label = { Text("📋 Historial") },
+                    onClick = { navController.navigate(WearScreens.HISTORIAL) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
         }
     }
 }
