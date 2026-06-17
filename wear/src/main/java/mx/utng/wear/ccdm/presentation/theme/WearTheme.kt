@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.wear.compose.material3.MaterialTheme
 
 @Composable
-fun SmartHealthWearTheme(
+fun SmartHealthMonitorTheme(
     content: @Composable () -> Unit
 ) {
     // Wear Material Theme — versión circular de MD3

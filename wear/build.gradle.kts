@@ -64,6 +64,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
     implementation("androidx.health:health-services-client:1.1.0-alpha05")
     // Compartir Repository con el módulo app
-    implementation(project(":app"))
+    implementation(project(":shared"))
 
 }

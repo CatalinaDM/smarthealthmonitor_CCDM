@@ -37,8 +37,6 @@ import android.content.pm.PackageManager
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import mx.utng.wear.ccdm.presentation.theme.SmartHealthWearTheme
-
 
 class WearMainActivity : ComponentActivity() {
 
@@ -55,7 +53,7 @@ class WearMainActivity : ComponentActivity() {
             100
         )
         setContent {
-            SmartHealthWearTheme {
+            SmartHealthMonitorTheme {
                 // TODO Ej.02: reemplazar con WearNavGraph
                 WearDashboardScreen()
             }

@@ -1,14 +1,15 @@
-package mx.utng.smarthealthmonitor_ccdm.data
+package mx.utng.smarthealthmonitor_shared_ccdm.repository
+
 import android.content.Context
+import android.util.Log
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import mx.utng.smarthealthmonitor_ccdm.data.db.LecturaFC
-import mx.utng.smarthealthmonitor_ccdm.data.db.LecturaFCDao
-import mx.utng.smarthealthmonitor_ccdm.data.db.SmartHealthDB
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import android.util.Log
+import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC
+import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFCDao
+import mx.utng.smarthealthmonitor_shared_ccdm.db.SmartHealthDB
 
 /**
  * Repositorio singleton que centraliza los datos de salud.
@@ -55,4 +56,3 @@ fun actualizarPasos(pasos: Int) {
 
 
 }
-

@@ -1,7 +1,10 @@
-package mx.utng.smarthealthmonitor_ccdm.data.db
+package mx.utng.smarthealthmonitor_shared_ccdm.db
 
 import androidx.room.*
 import androidx.room.Entity
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Entity(tableName = "lecturas_fc")
 data class LecturaFC(
@@ -9,9 +12,9 @@ data class LecturaFC(
     val id: Int = 0,
     val valorBpm: Int,
     val timestamp: Long = System.currentTimeMillis(),
-    val hora: String = java.text.SimpleDateFormat(
-        "HH:mm", java.util.Locale.getDefault())
-        .format(java.util.Date()),
+    val hora: String = SimpleDateFormat(
+        "HH:mm", Locale.getDefault())
+        .format(Date()),
     val esNormal: Boolean = valorBpm in 60..100
 )
 
