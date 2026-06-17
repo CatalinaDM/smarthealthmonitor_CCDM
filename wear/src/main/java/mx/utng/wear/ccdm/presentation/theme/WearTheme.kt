@@ -7,10 +7,7 @@ import androidx.wear.compose.material3.MaterialTheme
 fun SmartHealthMonitorTheme(
     content: @Composable () -> Unit
 ) {
-    /**
-     * Empty theme to customize for your app.
-     * See: https://developer.android.com/jetpack/compose/designsystems/custom
-     */
+    // Wear Material Theme — versión circular de MD3
     MaterialTheme(
         content = content
     )

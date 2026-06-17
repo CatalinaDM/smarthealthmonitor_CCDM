@@ -1,6 +1,6 @@
 package mx.utng.smarthealthmonitor_ccdm
 import android.app.Application
-import mx.utng.smarthealthmonitor_ccdm.data.SmartHealthRepository
+import mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository
 
 class SmartHealthApp : Application() {
 

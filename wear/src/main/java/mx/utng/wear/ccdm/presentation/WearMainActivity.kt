@@ -53,11 +53,14 @@ class WearMainActivity : ComponentActivity() {
             100
         )
         setContent {
-            WearApp("Smart Health")
+            SmartHealthMonitorTheme {
+                // TODO Ej.02: reemplazar con WearNavGraph
+                SmartHealthWearNavGraph()
+            }
         }
     }
 
-    override fun onRequestPermissionsResult(
+override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
         grantResults: IntArray

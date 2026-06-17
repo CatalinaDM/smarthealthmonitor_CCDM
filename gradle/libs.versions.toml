@@ -21,6 +21,9 @@ coreSplashscreen = "1.2.0"
 roomCompiler = "2.8.4"
 constraintlayout = "2.2.1"
 foundation = "1.11.2"
+appcompat = "1.7.1"
+material = "1.14.0"
+composeNavigation = "1.6.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,9 +52,13 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-compose-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "composeNavigation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 

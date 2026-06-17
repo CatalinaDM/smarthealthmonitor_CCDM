@@ -1,4 +1,4 @@
-package mx.utng.smarthealthmonitor_ccdm.data.db
+package mx.utng.smarthealthmonitor_shared_ccdm.db
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
