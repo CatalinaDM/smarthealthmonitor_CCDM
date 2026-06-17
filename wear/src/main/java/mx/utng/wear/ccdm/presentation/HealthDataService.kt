@@ -6,6 +6,7 @@ import androidx.health.services.client.PassiveListenerService
 import androidx.health.services.client.data.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.guava.await
+import android.util.Log
 
 class HealthDataService : PassiveListenerService() {
 
@@ -14,11 +15,15 @@ class HealthDataService : PassiveListenerService() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.d("FC_TEST", "HealthDataService iniciado")
         wearDataSender = WearDataSender(this)  // S6: MessageClient
     }
 
     override fun onNewDataPointsReceived(dataPoints: DataPointContainer) {
+
+
         val fcDataPoints = dataPoints.getData(DataType.HEART_RATE_BPM)
+        Log.d("FC_TEST", "Datos recibidos: ${fcDataPoints.size}")
 
         fcDataPoints.forEach { dataPoint ->
             if (dataPoint is SampleDataPoint<Double>) {
