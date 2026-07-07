@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="Theme.SmartHealthTV"
+        parent="Theme.Leanback">
+
+        <item name="colorPrimary">@color/sh_primary</item>
+
+    </style>
+
+</resources>
