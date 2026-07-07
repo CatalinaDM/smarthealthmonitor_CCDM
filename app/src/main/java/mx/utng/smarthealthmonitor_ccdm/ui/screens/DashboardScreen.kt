@@ -158,7 +158,7 @@ fun DashboardScreen(
                     OutlinedButton(
                         onClick = {
                             // Simular lectura del wearable
-                            val fcSimulado = (60..110).random()
+                            val fcSimulado = (55..68).random()
                             scope.launch{
                                 SmartHealthRepository.actualizarFC(fcSimulado)
 
