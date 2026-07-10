@@ -50,13 +50,14 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.tv.foundation)
+    implementation(libs.androidx.foundation)
     implementation(libs.androidx.tv.material)
+    implementation(libs.filament.android)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    // Leanback Library — el estándar de Android TV
-    implementation("androidx.leanback:leanback:1.2.0")
+    implementation("androidx.navigation:navigation-compose:2.8.5")
     // Glide para cargar imágenes en las cards
     implementation("com.github.bumptech.glide:glide:4.16.0")
     // ViewModel + Coroutines

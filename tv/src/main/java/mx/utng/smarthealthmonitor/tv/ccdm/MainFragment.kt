@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
+import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC
 
 class MainFragment : BrowseSupportFragment() {
 
@@ -28,6 +29,19 @@ class MainFragment : BrowseSupportFragment() {
 
         cargarFilas()
         observarDatos()
+        // Listener cuando el usuario da clic en una tarjeta
+        setOnItemViewClickedListener { itemViewHolder, item, rowViewHolder, row ->
+
+            if (item is LecturaFC) {
+
+                val detail = DetailFragment.newInstance(item.id)
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.main_browse_fragment, detail)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
     }
 
 
