@@ -19,8 +19,6 @@ import mx.utng.smarthealthmonitor_shared_ccdm.db.SmartHealthDB
 object SmartHealthRepository {
 
 
-    val fcActual: Any
-
     // FC actual del wearable (bpm)
     private val _fcFlow = MutableStateFlow(0)
     val fcFlow: StateFlow<Int> = _fcFlow.asStateFlow()

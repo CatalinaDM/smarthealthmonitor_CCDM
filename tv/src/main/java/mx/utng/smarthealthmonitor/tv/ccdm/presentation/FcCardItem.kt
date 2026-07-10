@@ -36,9 +36,14 @@ fun FcCardItem(
                 color = Color.White,
                 fontWeight = FontWeight.Bold)
             Column {
-                Text(lectura.component4(),
+                Text(
+                    text = if (lectura.esNormal)
+                        "Frecuencia normal"
+                    else
+                        "Fuera de rango",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.8f))
+                    color = Color.White.copy(alpha = 0.8f)
+                )
                 Text(lectura.hora,
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White.copy(alpha = 0.6f))
