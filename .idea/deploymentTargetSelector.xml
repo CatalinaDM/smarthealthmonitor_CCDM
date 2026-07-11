@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-06-18T04:47:12.741832700Z">
+        <DropdownSelection timestamp="2026-07-10T07:11:12.571404400Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marco\.android\avd\Pixel_8_Pro.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marco\.android\avd\Television_1080p.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -26,10 +26,10 @@
       </SelectionState>
       <SelectionState runConfigName="tv">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-07-07T07:22:59.433758400Z">
+        <DropdownSelection timestamp="2026-07-10T07:10:48.591750500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marco\.android\avd\Television_1080p.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marco\.android\avd\Medium_Phone.avd" />
             </handle>
           </Target>
         </DropdownSelection>

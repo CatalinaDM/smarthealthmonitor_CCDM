@@ -26,9 +26,11 @@ material = "1.14.0"
 composeNavigation = "1.6.2"
 runtime = "1.11.2"
 compiler = "3.2.0-alpha11"
-tvFoundation = "1.0.0-alpha07"
-tvMaterial = "1.0.0-alpha07"
+tvFoundation = "1.0.0"
+tvMaterial = "1.0.0"
 lifecycleRuntimeKtxVersion = "2.11.0"
+filamentAndroid = "1.17.1"
+runtimeVersion = "1.11.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,6 +67,8 @@ androidx-compiler = { group = "androidx.databinding", name = "compiler", version
 androidx-tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tvFoundation" }
 androidx-tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tvMaterial" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
+filament-android = { group = "com.google.ar.sceneform", name = "filament-android", version.ref = "filamentAndroid" }
+androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtimeVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
