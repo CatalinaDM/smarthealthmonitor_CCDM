@@ -25,7 +25,8 @@ import androidx.compose.foundation.lazy.items
 
 @Composable
 fun TvCatalogScreen(
-    viewModel: TvViewModel = viewModel()
+    viewModel: TvViewModel = viewModel(),
+    onCardClick: (Int) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -39,23 +40,21 @@ fun TvCatalogScreen(
             modifier = Modifier.fillMaxSize().padding(48.dp),
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            // Fila 1: FC actual
             item {
                 RowSection(title = "⚡ Estado Actual — ${state.fcActual} bpm") {
                     LazyRow(horizontalArrangement=Arrangement.spacedBy(16.dp)) {
                         items(state.lecturas.takeLast(3)) { lectura ->
-                            FcCardItem(lectura=lectura, onClick={})
+                            FcCardItem(lectura=lectura, onClick={ onCardClick(lectura.id) })
                         }
                     }
                 }
             }
 
-            // Fila 2: Historial completo
             item {
                 RowSection(title = "📋 Historial FC") {
                     LazyRow(horizontalArrangement=Arrangement.spacedBy(16.dp)) {
                         items(state.lecturas) { lectura ->
-                            FcCardItem(lectura=lectura, onClick={})
+                            FcCardItem(lectura=lectura, onClick={ onCardClick(lectura.id) })
                         }
                     }
                 }
@@ -72,4 +71,3 @@ private fun RowSection(title: String, content: @Composable () -> Unit) {
         content()
     }
 }
-
