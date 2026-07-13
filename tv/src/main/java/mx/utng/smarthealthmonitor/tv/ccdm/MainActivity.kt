@@ -10,7 +10,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import mx.utng.smarthealthmonitor.tv.ccdm.presentation.TvCatalogScreen
-import mx.utng.smarthealthmonitor.tv.ccdm.sync.TvSyncClient
 import mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository
 import mx.utng.smarthealthmonitor.tv.ccdm.presentation.TvDetailScreen
 import mx.utng.smarthealthmonitor.tv.ccdm.presentation.TvPlaybackScreen
@@ -21,7 +20,6 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         SmartHealthRepository.init(applicationContext)
-        TvSyncClient.start(lifecycleScope)
 
         setContent {
             // S12: Theme de Compose for TV envolviendo toda la navegación
