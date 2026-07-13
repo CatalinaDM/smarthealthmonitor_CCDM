@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.mediarouter.app.MediaRouteButton
 import com.google.android.gms.cast.framework.CastButtonFactory
+import android.view.ContextThemeWrapper
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -95,8 +96,12 @@ fun DashboardScreen(
                         // CastButton: AndroidView que envuelve MediaRouteButton
                         AndroidView(
                             factory = { context ->
-                                MediaRouteButton(context).apply {
-                                    CastButtonFactory.setUpMediaRouteButton(context, this)
+                                val castThemedContext = ContextThemeWrapper(
+                                    context,
+                                    androidx.appcompat.R.style.Theme_AppCompat_NoActionBar
+                                )
+                                MediaRouteButton(castThemedContext).apply {
+                                    CastButtonFactory.setUpMediaRouteButton(castThemedContext, this)
                                 }
                             },
                             modifier = Modifier.size(48.dp)
