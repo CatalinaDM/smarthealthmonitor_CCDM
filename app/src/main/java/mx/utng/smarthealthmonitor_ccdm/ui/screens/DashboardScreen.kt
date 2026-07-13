@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -38,6 +39,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.mediarouter.app.MediaRouteButton
+import com.google.android.gms.cast.framework.CastButtonFactory
+import android.view.ContextThemeWrapper
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -84,6 +90,21 @@ fun DashboardScreen(
                         Text(
                             text = "SmartHealth",
                             style = MaterialTheme.typography.titleLarge
+                        )
+                    },
+                    actions = {
+                        // CastButton: AndroidView que envuelve MediaRouteButton
+                        AndroidView(
+                            factory = { context ->
+                                val castThemedContext = ContextThemeWrapper(
+                                    context,
+                                    androidx.appcompat.R.style.Theme_AppCompat_NoActionBar
+                                )
+                                MediaRouteButton(castThemedContext).apply {
+                                    CastButtonFactory.setUpMediaRouteButton(castThemedContext, this)
+                                }
+                            },
+                            modifier = Modifier.size(48.dp)
                         )
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
