@@ -2,7 +2,6 @@ package mx.utng.smarthealthmonitor_ccdm
 import android.app.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import mx.utng.smarthealthmonitor_ccdm.sync.TvSyncServer
 import mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository
 
 import mx.utng.smarthealthmonitor_ccdm.mqtt.MqttAppService
@@ -19,9 +18,6 @@ class SmartHealthApp : Application() {
 
         mqttService = MqttAppService(context = this)
         mqttService.connect()
-
-        // Arrancar el servidor de sincronización para la TV
-        TvSyncServer.start(appScope)
 
     }
 }
