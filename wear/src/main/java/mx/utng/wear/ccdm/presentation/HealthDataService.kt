@@ -28,7 +28,10 @@ class HealthDataService : PassiveListenerService() {
         fcDataPoints.forEach { dataPoint ->
             if (dataPoint is SampleDataPoint<Double>) {
                 val bpm = dataPoint.value.toInt()
-                scope.launch { wearDataSender.enviarFC(bpm) }
+                scope.launch { 
+                    mx.utng.smarthealthmonitor_shared_ccdm.repository.SmartHealthRepository.actualizarFC(bpm)
+                    wearDataSender.enviarFC(bpm) 
+                }
             }
         }
     }
