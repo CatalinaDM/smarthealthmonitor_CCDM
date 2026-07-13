@@ -20,7 +20,6 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         SmartHealthRepository.init(applicationContext)
-
         setContent {
             // S12: Theme de Compose for TV envolviendo toda la navegación
             SmartHealthTvTheme {
