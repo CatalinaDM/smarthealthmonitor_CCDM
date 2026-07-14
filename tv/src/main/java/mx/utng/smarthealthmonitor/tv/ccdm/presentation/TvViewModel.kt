@@ -21,15 +21,10 @@ class TvViewModel(application: Application) : AndroidViewModel(application) {
     private val mqttFlow = MutableStateFlow<TvMessage?>(null)
     private val mqttSubscriber = MqttTvSubscriber(application, mqttFlow)
 
+    private val neonRepo = mx.utng.smarthealthmonitor.tv.ccdm.data.TvNeonRepository()
+
     init {
-        // Observar historial reactivo del Room DAO
-        viewModelScope.launch {
-            SmartHealthRepository.obtenerHistorial()
-                .catch { e -> _state.update{it.copy(error=e.message,isLoading=false)} }
-                .collect { lecturas ->
-                    _state.update { it.copy(lecturas=lecturas, isLoading=false) }
-                }
-        }
+        cargarDatos()
         
         mqttSubscriber.connect()
         // Observar mensajes MQTT y actualizar el estado de la UI
@@ -45,6 +40,25 @@ class TvViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
+    fun cargarDatos() {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading=true) }
+            try {
+                val lecturas = neonRepo.obtenerHistorialCompleto(50)
+                val stats = neonRepo.obtenerEstadisticas()
+                _state.update { it.copy(
+                    lecturas = lecturas.map { dto -> dto.toLecturaFC() },
+                    estadisticas = stats.map { dto -> dto.toLecturaFC() },
+                    isLoading = false
+                )}
+            } catch (e: Exception) {
+                _state.update { it.copy(error=e.message, isLoading=false) }
+            }
+        }
+    }
+
+    fun refresh() = cargarDatos()
 
     override fun onCleared() {
         super.onCleared()
