@@ -52,5 +52,10 @@ class NeonSyncWorker(
                 request
             )
         }
+
+        fun syncNow(context: Context) {
+            val request = OneTimeWorkRequestBuilder<NeonSyncWorker>().build()
+            WorkManager.getInstance(context).enqueue(request)
+        }
     }
 }

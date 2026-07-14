@@ -11,7 +11,6 @@ class TvNeonRepository {
     suspend fun obtenerHistorialCompleto(limite: Int = 50): List<LecturaFcDto> =
         withContext(Dispatchers.IO) {
             NeonClient.api.executeQuery(
-                auth = NeonClient.AUTH_HEADER,
                 connStr = NeonClient.CONN_STRING,
                 request = NeonRequest(
                     query = """SELECT id,bpm,estado,dispositivo,hora,created_at
@@ -27,7 +26,6 @@ LIMIT $1""".trimIndent(),
     suspend fun obtenerEstadisticas(): List<LecturaFcDto> =
         withContext(Dispatchers.IO) {
             NeonClient.api.executeQuery(
-                auth = NeonClient.AUTH_HEADER,
                 connStr = NeonClient.CONN_STRING,
                 request = NeonRequest(
                     query = """SELECT dispositivo,
@@ -39,4 +37,18 @@ GROUP BY dispositivo""".trimIndent()
                 )
             ).rows
         }
+
+    /** Enviar lectura mock de TV */
+    suspend fun enviarLecturaTvMock() {
+        withContext(Dispatchers.IO) {
+            val hora = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+            NeonClient.api.executeQuery(
+                connStr = NeonClient.CONN_STRING,
+                request = NeonRequest(
+                    query = """INSERT INTO lecturas_fc (bpm, estado, dispositivo, hora) VALUES (72, 'Normal', 'tv', $1)""",
+                    params = listOf(hora)
+                )
+            )
+        }
+    }
 }

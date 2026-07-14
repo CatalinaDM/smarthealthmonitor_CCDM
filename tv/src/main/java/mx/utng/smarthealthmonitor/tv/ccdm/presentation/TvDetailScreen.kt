@@ -57,6 +57,11 @@ fun TvDetailScreen(
                 fontWeight = FontWeight.ExtraBold
             )
             Text(
+                text = "Origen: ${lectura.dispositivo.uppercase()}",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Cyan
+            )
+            Text(
                 text = "Estado: ${lectura.estado}",
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White.copy(alpha = 0.8f)

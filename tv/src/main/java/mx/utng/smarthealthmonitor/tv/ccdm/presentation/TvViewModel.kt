@@ -24,26 +24,62 @@ class TvViewModel(application: Application) : AndroidViewModel(application) {
     private val neonRepo = mx.utng.smarthealthmonitor.tv.ccdm.data.TvNeonRepository()
 
     init {
-        cargarDatos()
+        viewModelScope.launch {
+            try { neonRepo.enviarLecturaTvMock() } catch (e: Exception) {}
+            cargarDatos()
+        }
         
         mqttSubscriber.connect()
         // Observar mensajes MQTT y actualizar el estado de la UI
         viewModelScope.launch {
             mqttFlow.collect { tvMsg ->
                 tvMsg ?: return@collect
-                _state.update { it.copy(
-                    fcActual = tvMsg.bpm,
-                    fcEstado = tvMsg.estado,
-                    ultimaHora = tvMsg.hora,
-                    isLoading = false
-                )}
+                
+                _state.update { currentState ->
+                    // Crear un registro local simulado para actualizar la UI sin asfixiar la Base de Datos
+                    val nuevaLectura = mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC(
+                        id = (currentState.lecturas.maxOfOrNull { it.id } ?: 0) + 1,
+                        bpm = tvMsg.bpm,
+                        estado = tvMsg.estado,
+                        hora = tvMsg.hora,
+                        dispositivo = "wear"
+                    )
+                    
+                    val nuevasLecturas = (listOf(nuevaLectura) + currentState.lecturas).take(50)
+                    
+                    // Actualizar la primera fila (estadisticas/estado actual)
+                    // Se actualizan "wear" y "app" porque la app refleja el mismo estado del reloj
+                    val estadisticasActualizadas = currentState.estadisticas.map { stat ->
+                        if (stat.dispositivo.equals("wear", ignoreCase = true) || stat.dispositivo.equals("app", ignoreCase = true)) {
+                            stat.copy(bpm = tvMsg.bpm, estado = tvMsg.estado, hora = tvMsg.hora)
+                        } else stat
+                    }.toMutableList()
+                    
+                    if (estadisticasActualizadas.none { it.dispositivo.equals("wear", ignoreCase = true) }) {
+                        estadisticasActualizadas.add(0, nuevaLectura)
+                    }
+                    if (estadisticasActualizadas.none { it.dispositivo.equals("app", ignoreCase = true) }) {
+                        estadisticasActualizadas.add(0, nuevaLectura.copy(dispositivo = "app"))
+                    }
+                    
+                    currentState.copy(
+                        fcActual = tvMsg.bpm,
+                        fcEstado = tvMsg.estado,
+                        ultimaHora = tvMsg.hora,
+                        lecturas = nuevasLecturas,
+                        estadisticas = estadisticasActualizadas,
+                        isLoading = false
+                    )
+                }
             }
         }
     }
 
-    fun cargarDatos() {
+    fun cargarDatos(silent: Boolean = false) {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading=true) }
+            if (!silent) {
+                _state.update { it.copy(isLoading=true) }
+            }
             try {
                 val lecturas = neonRepo.obtenerHistorialCompleto(50)
                 val stats = neonRepo.obtenerEstadisticas()
@@ -53,7 +89,9 @@ class TvViewModel(application: Application) : AndroidViewModel(application) {
                     isLoading = false
                 )}
             } catch (e: Exception) {
-                _state.update { it.copy(error=e.message, isLoading=false) }
+                if (!silent) {
+                    _state.update { it.copy(error=e.message, isLoading=false) }
+                }
             }
         }
     }

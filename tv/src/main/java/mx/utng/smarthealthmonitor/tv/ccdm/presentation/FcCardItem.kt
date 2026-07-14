@@ -37,6 +37,11 @@ fun FcCardItem(
                 fontWeight = FontWeight.Bold)
             Column {
                 Text(
+                    text = "Origen: ${lectura.dispositivo.uppercase()}",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Color.Cyan
+                )
+                Text(
                     text = if (lectura.estado == "Normal")
                         "Frecuencia normal"
                     else
