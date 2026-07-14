@@ -25,7 +25,7 @@ interface LecturaFCDao {
 
     // Limpiar lecturas más antiguas
     @Query("DELETE FROM lecturas_fc WHERE id NOT IN (SELECT id FROM lecturas_fc ORDER BY id DESC LIMIT 100)")
-    suspend fun limpiarViejos(limite: Long) // Placeholder to avoid breaking other files
+    suspend fun limpiarViejos()
 
     // ── Nuevos para sync ───────────────────────────────────
     @Insert(onConflict = OnConflictStrategy.REPLACE)
