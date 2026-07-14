@@ -1,6 +1,6 @@
-package mx.utng.smarthealthmonitor_ccdm.data.remote
+package mx.utng.smarthealthmonitor_shared_ccdm.data.remote
 
-import mx.utng.smarthealthmonitor_ccdm.BuildConfig
+import mx.utng.smarthealthmonitor_shared_ccdm.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

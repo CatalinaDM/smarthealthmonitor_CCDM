@@ -5,8 +5,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC
-import mx.utng.smarthealthmonitor_ccdm.data.remote.NeonClient
-import mx.utng.smarthealthmonitor_ccdm.data.remote.NeonRequest
+import mx.utng.smarthealthmonitor_shared_ccdm.data.remote.LecturaFcDto
+import mx.utng.smarthealthmonitor_shared_ccdm.data.remote.NeonClient
+import mx.utng.smarthealthmonitor_shared_ccdm.data.remote.NeonRequest
 
 class SyncRepository(
     private val dao: mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFCDao // Room local

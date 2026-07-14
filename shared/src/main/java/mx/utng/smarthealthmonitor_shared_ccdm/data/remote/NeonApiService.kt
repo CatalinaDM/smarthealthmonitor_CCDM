@@ -1,10 +1,9 @@
-package mx.utng.smarthealthmonitor_ccdm.data.remote
+package mx.utng.smarthealthmonitor_shared_ccdm.data.remote
 
 import kotlinx.serialization.Serializable
 import retrofit2.http.*
 
 /** Request genérico para la Neon HTTP API */
-@Serializable
 data class NeonRequest(val query: String, val params: List<Any> = emptyList())
 
 /** Response de la Neon HTTP API */
@@ -25,7 +24,18 @@ data class LecturaFcDto(
     val hora : String,
     val fecha : String = "",
     val created_at : String = "",
-)
+) {
+    fun toLecturaFC(): mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC {
+        return mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC(
+            id = id,
+            bpm = bpm,
+            estado = estado,
+            dispositivo = dispositivo,
+            hora = hora,
+            sincronizado = true
+        )
+    }
+}
 
 /** Interfaz Retrofit para la Neon HTTP API */
 interface NeonApiService {
