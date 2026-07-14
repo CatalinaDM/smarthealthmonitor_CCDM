@@ -21,14 +21,12 @@ class TvViewModel(application: Application) : AndroidViewModel(application) {
     private val mqttFlow = MutableStateFlow<TvMessage?>(null)
     private val mqttSubscriber = MqttTvSubscriber(application, mqttFlow)
 
+    private val neonRepo = mx.utng.smarthealthmonitor.tv.ccdm.data.TvNeonRepository()
+
     init {
-        // Observar historial reactivo del Room DAO
         viewModelScope.launch {
-            SmartHealthRepository.obtenerHistorial()
-                .catch { e -> _state.update{it.copy(error=e.message,isLoading=false)} }
-                .collect { lecturas ->
-                    _state.update { it.copy(lecturas=lecturas, isLoading=false) }
-                }
+            try { neonRepo.enviarLecturaTvMock() } catch (e: Exception) {}
+            cargarDatos()
         }
         
         mqttSubscriber.connect()
@@ -36,15 +34,71 @@ class TvViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             mqttFlow.collect { tvMsg ->
                 tvMsg ?: return@collect
-                _state.update { it.copy(
-                    fcActual = tvMsg.bpm,
-                    fcEstado = tvMsg.estado,
-                    ultimaHora = tvMsg.hora,
-                    isLoading = false
-                )}
+                
+                _state.update { currentState ->
+                    // Crear un registro local simulado para actualizar la UI sin asfixiar la Base de Datos
+                    val nuevaLectura = mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC(
+                        id = (currentState.lecturas.maxOfOrNull { it.id } ?: 0) + 1,
+                        bpm = tvMsg.bpm,
+                        estado = tvMsg.estado,
+                        hora = tvMsg.hora,
+                        dispositivo = "wear"
+                    )
+                    
+                    val nuevasLecturas = (listOf(nuevaLectura) + currentState.lecturas).take(50)
+                    
+                    // Actualizar la primera fila (estadisticas/estado actual)
+                    // Se actualizan "wear" y "app" porque la app refleja el mismo estado del reloj
+                    val estadisticasActualizadas = currentState.estadisticas.map { stat ->
+                        if (stat.dispositivo.equals("wear", ignoreCase = true) || stat.dispositivo.equals("app", ignoreCase = true)) {
+                            stat.copy(bpm = tvMsg.bpm, estado = tvMsg.estado, hora = tvMsg.hora)
+                        } else stat
+                    }.toMutableList()
+                    
+                    if (estadisticasActualizadas.none { it.dispositivo.equals("wear", ignoreCase = true) }) {
+                        estadisticasActualizadas.add(0, nuevaLectura)
+                    }
+                    if (estadisticasActualizadas.none { it.dispositivo.equals("app", ignoreCase = true) }) {
+                        estadisticasActualizadas.add(0, nuevaLectura.copy(dispositivo = "app"))
+                    }
+                    
+                    currentState.copy(
+                        fcActual = tvMsg.bpm,
+                        fcEstado = tvMsg.estado,
+                        ultimaHora = tvMsg.hora,
+                        lecturas = nuevasLecturas,
+                        estadisticas = estadisticasActualizadas,
+                        isLoading = false
+                    )
+                }
             }
         }
     }
+
+    fun cargarDatos(silent: Boolean = false) {
+        viewModelScope.launch {
+            if (!silent) {
+                _state.update { it.copy(isLoading=true) }
+            }
+            try {
+                val lecturas = neonRepo.obtenerHistorialCompleto(50)
+                val stats = neonRepo.obtenerEstadisticas()
+                val analisis = neonRepo.obtenerAnalisisAvanzado()
+                _state.update { it.copy(
+                    lecturas = lecturas.map { dto -> dto.toLecturaFC() },
+                    estadisticas = stats.map { dto -> dto.toLecturaFC() },
+                    analisisAvanzado = analisis.map { dto -> dto.toLecturaFC() },
+                    isLoading = false
+                )}
+            } catch (e: Exception) {
+                if (!silent) {
+                    _state.update { it.copy(error=e.message, isLoading=false) }
+                }
+            }
+        }
+    }
+
+    fun refresh() = cargarDatos()
 
     override fun onCleared() {
         super.onCleared()

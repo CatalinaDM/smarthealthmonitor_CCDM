@@ -191,6 +191,25 @@ fun DashboardScreen(
                         Text("Simular dato del wearable (DEBUG)")
                     }
                 }
+
+                // ── Botón Sincronizar Manual ──
+                item {
+                    val context = androidx.compose.ui.platform.LocalContext.current
+                    OutlinedButton(
+                        onClick = {
+                            viewModel.sincronizarManual(context)
+                            scope.launch {
+                                snackbarHost.showSnackbar(
+                                    message = "Sincronización manual iniciada",
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Sincronizar ahora (Manual)")
+                    }
+                }
             }
         }
     }

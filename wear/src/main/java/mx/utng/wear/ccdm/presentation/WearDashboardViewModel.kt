@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 class WearDashboardViewModel(application: Application) : AndroidViewModel(application) {
 
     private val mqttPublisher = MqttWearPublisher(application)
+    private val neonRepo = mx.utng.wear.ccdm.data.WearNeonRepository()
 
     // Reutiliza el mismo Repository del módulo app
     val fc: StateFlow<Int> = SmartHealthRepository.fcFlow
@@ -38,6 +39,10 @@ class WearDashboardViewModel(application: Application) : AndroidViewModel(applic
             fc.collect { bpm ->
                 val estado = when { bpm < 60 -> "FC Baja"; bpm > 100 -> "FC Alta"; else -> "Normal" }
                 mqttPublisher.publishFC(bpm, estado)
+                launch(Dispatchers.IO) {
+                    runCatching { neonRepo.publicarLectura(bpm, estado) }
+                    .onFailure { android.util.Log.w("WEAR","Sin red: ${it.message}") }
+                }
             }
         }
     }

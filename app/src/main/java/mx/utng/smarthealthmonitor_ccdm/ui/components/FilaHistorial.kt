@@ -27,16 +27,16 @@ fun FilaHistorial(
     ) {
         // Valor FC con color según si es normal o no
         Text(
-            text = "${lectura.valorBpm} bpm",
+            text = "${lectura.bpm} bpm",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Medium,
-            color = if (lectura.esNormal)
+            color = if (lectura.estado == "Normal")
                 MaterialTheme.colorScheme.onSurface
             else
                 MaterialTheme.colorScheme.error
         )
         Text(
-            text = lectura.hora,
+            text = "${lectura.hora} ${if(lectura.sincronizado) "✅" else "⏳"}",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

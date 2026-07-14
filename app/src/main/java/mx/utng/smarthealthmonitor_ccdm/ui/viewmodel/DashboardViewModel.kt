@@ -42,4 +42,8 @@ class DashboardViewModel : ViewModel() {
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = 98
         )
+
+    fun sincronizarManual(context: android.content.Context) {
+        mx.utng.smarthealthmonitor_ccdm.data.sync.NeonSyncWorker.syncNow(context)
+    }
 }

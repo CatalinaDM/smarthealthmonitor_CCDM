@@ -41,9 +41,9 @@ fun TvCatalogScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
             item {
-                RowSection(title = "⚡ Estado Actual — ${state.fcActual} bpm") {
+                RowSection(title = "⚡ Estado Actual (3 dispositivos)") {
                     LazyRow(horizontalArrangement=Arrangement.spacedBy(16.dp)) {
-                        items(state.lecturas.takeLast(3)) { lectura ->
+                        items(state.estadisticas) { lectura ->
                             FcCardItem(lectura=lectura, onClick={ onCardClick(lectura.id) })
                         }
                     }
@@ -55,6 +55,18 @@ fun TvCatalogScreen(
                     LazyRow(horizontalArrangement=Arrangement.spacedBy(16.dp)) {
                         items(state.lecturas) { lectura ->
                             FcCardItem(lectura=lectura, onClick={ onCardClick(lectura.id) })
+                        }
+                    }
+                }
+            }
+
+            if (state.analisisAvanzado.isNotEmpty()) {
+                item {
+                    RowSection(title = "🧠 Análisis Avanzado (Reto Extra)") {
+                        LazyRow(horizontalArrangement=Arrangement.spacedBy(16.dp)) {
+                            items(state.analisisAvanzado) { lectura ->
+                                FcCardItem(lectura=lectura, onClick={ onCardClick(lectura.id) })
+                            }
                         }
                     }
                 }

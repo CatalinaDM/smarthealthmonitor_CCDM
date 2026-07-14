@@ -5,6 +5,14 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+import java.util.Properties
+
+val localProps = Properties()
+val propertiesFile = file("../local.properties")
+if (propertiesFile.exists()) {
+    localProps.load(propertiesFile.inputStream())
+}
+
 android {
     namespace = "mx.utng.smarthealthmonitor_ccdm"
     compileSdk {
@@ -21,6 +29,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        buildConfigField("String", "NEON_API_KEY", "\"${localProps["NEON_API_KEY"]}\"")
+        buildConfigField("String", "NEON_HOST", "\"${localProps["NEON_HOST"]}\"")
     }
 
     buildTypes {
@@ -38,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -56,6 +68,17 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.material3)
     implementation("androidx.navigation:navigation-compose:2.9.8")
+
+    // Retrofit + OkHttp para llamadas a Neon HTTP API
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    // Kotlinx Serialization (para los DTOs)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    // WorkManager para sync periódico en background
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+
     // Wearable Data Layer API
     implementation("com.google.android.gms:play-services-wearable:18.2.0")
     //implementation(libs.androidx.room.compiler)

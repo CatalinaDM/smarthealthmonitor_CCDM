@@ -11,13 +11,13 @@ import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC
 // Datos de prueba para desarrollo (mock data)
 object MockData {
     val historialFC = listOf(
-        LecturaFC(1, 78, 1717410000000, "11:00"),
-        LecturaFC(2, 82, 1717410000000,"10:30"),
-        LecturaFC(3, 76, 1717410000000,"10:00"),
-        LecturaFC(4, 95, 1717410000000,"09:30", false),  // fuera de rango
-        LecturaFC(5, 71, 1717410000000,"09:00"),
-        LecturaFC(6, 80, 1717410000000,"08:30"),
-        LecturaFC(7, 74, 1717410000000,"08:00")
+        LecturaFC(1, 78, "Normal", "app", "11:00"),
+        LecturaFC(2, 82, "Normal", "app", "10:30"),
+        LecturaFC(3, 76, "Normal", "app", "10:00"),
+        LecturaFC(4, 95, "FC Alta", "app", "09:30"),
+        LecturaFC(5, 71, "Normal", "app", "09:00"),
+        LecturaFC(6, 80, "Normal", "app", "08:30"),
+        LecturaFC(7, 74, "Normal", "app", "08:00")
     )
     var fcActual = 78
     var pasosActual = 4250

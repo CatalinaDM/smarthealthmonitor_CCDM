@@ -38,6 +38,15 @@ android.defaultConfig {
     buildConfigField("String", "MQTT_BROKER", "\"${localProperties.getProperty("MQTT_BROKER") ?: ""}\"")
     buildConfigField("String", "MQTT_USERNAME", "\"${localProperties.getProperty("MQTT_USERNAME") ?: ""}\"")
     buildConfigField("String", "MQTT_PASSWORD", "\"${localProperties.getProperty("MQTT_PASSWORD") ?: ""}\"")
+    
+    val neonKey = localProperties.getProperty("NEON_API_KEY") ?: ""
+    val neonHost = localProperties.getProperty("NEON_HOST") ?: ""
+    val neonDb = localProperties.getProperty("NEON_DB") ?: ""
+    val neonConnStr = localProperties.getProperty("NEON_CONN_STRING") ?: ""
+    buildConfigField("String", "NEON_API_KEY", "\"${neonKey}\"")
+    buildConfigField("String", "NEON_HOST", "\"${neonHost}\"")
+    buildConfigField("String", "NEON_DB", "\"${neonDb}\"")
+    buildConfigField("String", "NEON_CONN_STRING", "\"${neonConnStr}\"")
 }
 dependencies {
     implementation(libs.androidx.appcompat)
@@ -56,4 +65,10 @@ dependencies {
     api(libs.paho.mqtt)
     api(libs.paho.mqtt.service)
     api(libs.kotlinx.serialization.json)
+    
+    // Retrofit para Neon API HTTP
+    val retrofitVersion = "2.9.0"
+    api("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    api("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    api("com.squareup.okhttp3:logging-interceptor:4.11.0")
 }
