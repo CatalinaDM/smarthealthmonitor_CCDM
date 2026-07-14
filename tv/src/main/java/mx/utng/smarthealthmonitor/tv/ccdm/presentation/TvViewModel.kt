@@ -83,9 +83,11 @@ class TvViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val lecturas = neonRepo.obtenerHistorialCompleto(50)
                 val stats = neonRepo.obtenerEstadisticas()
+                val analisis = neonRepo.obtenerAnalisisAvanzado()
                 _state.update { it.copy(
                     lecturas = lecturas.map { dto -> dto.toLecturaFC() },
                     estadisticas = stats.map { dto -> dto.toLecturaFC() },
+                    analisisAvanzado = analisis.map { dto -> dto.toLecturaFC() },
                     isLoading = false
                 )}
             } catch (e: Exception) {

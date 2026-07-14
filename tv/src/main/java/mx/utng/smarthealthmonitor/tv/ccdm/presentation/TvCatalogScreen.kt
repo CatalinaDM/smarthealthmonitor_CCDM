@@ -59,6 +59,18 @@ fun TvCatalogScreen(
                     }
                 }
             }
+
+            if (state.analisisAvanzado.isNotEmpty()) {
+                item {
+                    RowSection(title = "🧠 Análisis Avanzado (Reto Extra)") {
+                        LazyRow(horizontalArrangement=Arrangement.spacedBy(16.dp)) {
+                            items(state.analisisAvanzado) { lectura ->
+                                FcCardItem(lectura=lectura, onClick={ onCardClick(lectura.id) })
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
