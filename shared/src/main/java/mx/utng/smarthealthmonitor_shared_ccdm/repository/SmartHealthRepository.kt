@@ -38,11 +38,11 @@ object SmartHealthRepository {
         dao = SmartHealthDB.getDatabase(context).lecturaDao()
     }
 
-    suspend fun actualizarFC(bpm: Int) {
-        Log.d("Repository", "Guardando FC: $bpm")
+    suspend fun agregarLectura(bpm: Int) {
+        val estado = when { bpm < 60 -> "FC Baja"; bpm > 100 -> "FC Alta"; else -> "Normal" }
+        val hora = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+        dao?.insertar(LecturaFC(bpm = bpm, estado = estado, hora = hora))
         _fcFlow.value = bpm
-        // Persistir en Room automáticamente
-        dao?.insertar(LecturaFC(valorBpm = bpm))
     }
 
 fun actualizarPasos(pasos: Int) {

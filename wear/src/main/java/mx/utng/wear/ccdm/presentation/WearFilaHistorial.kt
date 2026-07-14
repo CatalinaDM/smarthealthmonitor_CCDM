@@ -11,13 +11,13 @@ import mx.utng.smarthealthmonitor_shared_ccdm.db.LecturaFC
 
 @Composable
 fun WearFilaHistorial(lectura: LecturaFC) {
-    val color = if (lectura.esNormal)
+    val color = if (lectura.estado == "Normal")
         MaterialTheme.colors.primary
     else
         MaterialTheme.colors.error
 
     Chip(
-        label = { Text("${lectura.valorBpm} bpm",
+        label = { Text("${lectura.bpm} bpm",
             color = color) },
         secondaryLabel = { Text(lectura.hora) },
         onClick = { },

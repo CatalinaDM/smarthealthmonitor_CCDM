@@ -31,13 +31,13 @@ fun FcCardItem(
             modifier = Modifier.fillMaxSize().padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("${lectura.valorBpm} bpm",
+            Text("${lectura.bpm} bpm",
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White,
                 fontWeight = FontWeight.Bold)
             Column {
                 Text(
-                    text = if (lectura.esNormal)
+                    text = if (lectura.estado == "Normal")
                         "Frecuencia normal"
                     else
                         "Fuera de rango",
