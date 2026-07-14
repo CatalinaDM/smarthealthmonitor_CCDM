@@ -42,9 +42,11 @@ android.defaultConfig {
     val neonKey = localProperties.getProperty("NEON_API_KEY") ?: ""
     val neonHost = localProperties.getProperty("NEON_HOST") ?: ""
     val neonDb = localProperties.getProperty("NEON_DB") ?: ""
+    val neonConnStr = localProperties.getProperty("NEON_CONN_STRING") ?: ""
     buildConfigField("String", "NEON_API_KEY", "\"${neonKey}\"")
     buildConfigField("String", "NEON_HOST", "\"${neonHost}\"")
     buildConfigField("String", "NEON_DB", "\"${neonDb}\"")
+    buildConfigField("String", "NEON_CONN_STRING", "\"${neonConnStr}\"")
 }
 dependencies {
     implementation(libs.androidx.appcompat)

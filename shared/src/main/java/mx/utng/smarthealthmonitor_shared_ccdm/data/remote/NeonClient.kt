@@ -10,7 +10,7 @@ object NeonClient {
     private const val BASE_URL = "https://${BuildConfig.NEON_HOST}/"
     
     val AUTH_HEADER = "Bearer ${BuildConfig.NEON_API_KEY}"
-    val CONN_STRING = "postgresql://[usuario]:[pass]@${BuildConfig.NEON_HOST}/neondb?sslmode=require"
+    val CONN_STRING = BuildConfig.NEON_CONN_STRING
     
     val api: NeonApiService by lazy {
         Retrofit.Builder()
